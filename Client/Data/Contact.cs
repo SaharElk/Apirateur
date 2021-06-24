@@ -17,19 +17,19 @@ namespace Client.Data
         public int UserId { get; private set; }
 
         // Constructeur pour application web
-        public Contact(string lastName, string firstName, string email, int categoryId)
+        public Contact(string lastName, string firstName, string email, int categoryId, int userId)
         {
             LastName = lastName;
             FirstName = firstName;
             Email = email;
             CategoryId = categoryId;
+            UserId = userId;
         }
 
         // Constructeur pour le mappers
-        internal Contact(int id, string lastName, string firstName, string email, int categoryId, int userId) : this(lastName, firstName, email, categoryId)
+        internal Contact(int id, string lastName, string firstName, string email, int categoryId, int userId) : this(lastName, firstName, email, categoryId, userId)
         {
             Id = id;
-            UserId = userId;
         }
 
         //internal Contact(int id, string lastName, string firstName, string email, int categoryId, int userId)

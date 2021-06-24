@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tools.Connections.Database;
+using Apirateur.Infrastructure.Session;
 
 namespace Apirateur
 {
@@ -56,6 +57,8 @@ namespace Apirateur
             });
 
             services.AddHttpContextAccessor();
+
+            services.AddScoped<ISessionManager, SessionManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +81,7 @@ namespace Apirateur
 
             // Précise à l'application qu'on utilise les sessions
             app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthorization();

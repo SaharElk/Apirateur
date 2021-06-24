@@ -1,6 +1,8 @@
-﻿using Apirateur.Models.Forms.Auth;
+﻿using Apirateur.Infrastructure.Session;
+using Apirateur.Models.Forms.Auth;
 using Client.Data;
 using Client.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Apirateur.Controllers
@@ -8,10 +10,12 @@ namespace Apirateur.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthRepository _authRepository;
+        private readonly ISessionManager _sessionManager;
 
-        public AuthController(IAuthRepository authRepository)
+        public AuthController(IAuthRepository authRepository, ISessionManager sessionManager)
         {
             _authRepository = authRepository;
+            _sessionManager = sessionManager;
         }
 
         public ActionResult Index()
@@ -59,7 +63,22 @@ namespace Apirateur.Controllers
                 return View(form);
             }
 
+            _sessionManager.User = new UserSession 
+            { 
+                Id = user.Id,
+                LastName = user.LastName,
+                FirstName = user.FirstName,
+                Email = user.Email,
+                IsAdmin = user.IsAdmin
+            };
+
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Logout()
+        {
+            _sessionManager.Clear();
+            return RedirectToAction("Login");
         }
 
     }
