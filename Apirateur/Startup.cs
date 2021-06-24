@@ -1,3 +1,7 @@
+using Client.Repositories;
+using Client.Services;
+using GS = Global.Services;
+using GR = Global.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +36,26 @@ namespace Apirateur
             // On crée la connexion que nous sera injecté dans notre projet
             // sp = Service Provider
             services.AddSingleton(sp => new Connection(SqlClientFactory.Instance, _connectionString));
+
+            // On injecte les repositories de la couche Client dans notre projet
+            services.AddSingleton<IAuthRepository, AuthService>();
+            services.AddSingleton<IContactRepository, ContactService>();
+            services.AddSingleton<ICategoryRepository, CategoryService>();
+
+            services.AddSingleton<GR.IAuthRepository, GS.AuthService>();
+            services.AddSingleton<GR.IContactRepository, GS.ContactService>();
+            services.AddSingleton<GR.ICategoryRepository, GS.CategoryService>();
+
+            // Configuration des sessions
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.IsEssential = true;
+                options.Cookie.HttpOnly = true;
+            });
+
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +76,8 @@ namespace Apirateur
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // Précise à l'application qu'on utilise les sessions
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GS = Global.Services;
+using GR = Global.Repositories;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,21 +12,26 @@ namespace Client.Services
 {
     public class AuthService : IAuthRepository
     {
-        private readonly GS.AuthService _authService;
+        private readonly GR.IAuthRepository _authRepository;
 
-        public AuthService(GS.AuthService authService)
+        public AuthService(GR.IAuthRepository authRepository)
         {
-            _authService = authService;
+            _authRepository = authRepository;
         }
 
         public User Login(string email, string password)
         {
-            return _authService.Login(email, password)?.ToClient();
+            return _authRepository.Login(email, password)?.ToClient();
         }
 
         public bool Register(User user)
         {
-            return _authService.Register(user.ToGlobal());
+            return _authRepository.Register(user.ToGlobal());
+        }
+
+        public bool EmailExists(string email)
+        {
+            return _authRepository.EmailExists(email);
         }
     }
 }

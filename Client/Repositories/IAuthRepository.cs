@@ -6,5 +6,6 @@ namespace Client.Repositories
     {
         User Login(string email, string password);
         bool Register(User user);
+        bool EmailExists(string email);
     }
 }

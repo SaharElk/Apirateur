@@ -39,11 +39,12 @@ namespace Global.Services
             return _connection.ExecuteNonQuery(command) == 1;
         }
 
+        // Vérifie si l'email existe
         public bool EmailExists(string email)
         {
-            Command command = new Command("SELECT COUNT(Email) FROM[User] WHERE Email = @Email", false);
+            Command command = new Command("SELECT COUNT(Email) FROM[User] WHERE Email = @Email;", false);
             command.AddParameter("Email", email);
-            return _connection.ExecuteNonQuery(command) == 1;
+            return (int)_connection.ExecuteScalar(command) == 1;
         }
     }
 }

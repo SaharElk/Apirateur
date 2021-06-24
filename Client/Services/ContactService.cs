@@ -1,5 +1,5 @@
 ﻿using System;
-using GS = Global.Services;
+using GR = Global.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,46 +12,46 @@ namespace Client.Services
 {
     public class ContactService : IContactRepository
     {
-        private readonly GS.ContactService _contactService;
+        private readonly GR.IContactRepository _contactRepository;
 
-        public ContactService(GS.ContactService contactService)
+        public ContactService(GR.IContactRepository contactService)
         {
-            _contactService = contactService;
+            _contactRepository = contactService;
         }
 
         public IEnumerable<Contact> Get()
         {
-            return _contactService.Get().Select(contact => contact.ToClient());
+            return _contactRepository.Get().Select(contact => contact.ToClient());
         }
 
         public IEnumerable<Contact> GetByCategory(int id)
         {
-            return _contactService.GetByCategory(id).Select(contact => contact.ToClient());
+            return _contactRepository.GetByCategory(id).Select(contact => contact.ToClient());
         }
 
         public IEnumerable<Contact> GetByUser(int id)
         {
-            return _contactService.GetByUser(id).Select(contact => contact.ToClient());
+            return _contactRepository.GetByUser(id).Select(contact => contact.ToClient());
         }
 
         public Contact Get(int id)
         {
-            return _contactService.Get(id)?.ToClient();
+            return _contactRepository.Get(id)?.ToClient();
         }
 
         public bool Insert(Contact contact)
         {
-            return _contactService.Insert(contact.ToGlobal());
+            return _contactRepository.Insert(contact.ToGlobal());
         }
 
         public bool Update(int id, Contact contact)
         {
-            return _contactService.Update(id, contact.ToGlobal());
+            return _contactRepository.Update(id, contact.ToGlobal());
         }
 
         public bool Delete(int id)
         {
-            return _contactService.Delete(id);
+            return _contactRepository.Delete(id);
         }
     }
 }

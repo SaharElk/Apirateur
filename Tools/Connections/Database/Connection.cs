@@ -63,7 +63,7 @@ namespace Tools.Connections.Database
                 using (DbCommand dbCommand = CreateCommand(command, dbConnection))
                 {
                     dbConnection.Open();
-                    object o = dbCommand.ExecuteNonQuery();
+                    object o = dbCommand.ExecuteScalar();
                     return o is DBNull ? null : o;
                 }
             }

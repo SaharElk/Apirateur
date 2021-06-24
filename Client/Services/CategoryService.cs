@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GS = Global.Services;
+using GR = Global.Repositories;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,21 +12,21 @@ namespace Client.Services
 {
     public class CategoryService : ICategoryRepository
     {
-        private readonly GS.CategoryService _categoryService;
+        private readonly GR.ICategoryRepository _categoryRepository;
 
-        public CategoryService(GS.CategoryService categoryService)
+        public CategoryService(GR.ICategoryRepository categoryRepository)
         {
-            _categoryService = categoryService;
+            _categoryRepository = categoryRepository;
         }
 
         public IEnumerable<Category> Get()
         {
-            return _categoryService.Get().Select(category => category.ToClient());
+            return _categoryRepository.Get().Select(category => category.ToClient());
         }
 
         public Category Get(int id)
         {
-            return _categoryService.Get(id)?.ToClient();
+            return _categoryRepository.Get(id)?.ToClient();
         }
     }
 }
